@@ -46,7 +46,7 @@ public class SideslipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
     private boolean fitToContents = false;
     int fitToContentsOffset;
     //滑动完成是否还显示peek
-    private boolean smallTailMovedOut = false;
+    private boolean smallTailMovedOut = true;
     int smallTailMovedOutOffset;
     VelocityTracker velocityTracker;
     int initialX;
@@ -210,11 +210,15 @@ public class SideslipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
         }
     }
 
+    public void setSmallTailWidth(int smallTailWidth) {
+        this.smallTailWidth = smallTailWidth;
+    }
+
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
         parent.onLayoutChild(child, layoutDirection);
         parentWidth = parent.getWidth();
-        smallTailWidth = this.parentWidth - parent.getWidth() * 9 / 16;
+//        smallTailWidth = this.parentWidth - parent.getWidth() * 9 / 16;
         this.fitToContentsOffset = Math.max(0, this.parentWidth - child.getWidth());
         halfExpandedOffset = parentWidth / 2;
         calculateCollapsedOffset();
@@ -392,4 +396,18 @@ public class SideslipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
 //        }
 //
 //    }
+
+    public static <V extends View> SideslipEntryBehavior<V> from(V view) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        if (!(params instanceof android.support.design.widget.CoordinatorLayout.LayoutParams)) {
+            throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
+        } else {
+            CoordinatorLayout.Behavior behavior = ((android.support.design.widget.CoordinatorLayout.LayoutParams)params).getBehavior();
+            if (!(behavior instanceof SideslipEntryBehavior)) {
+                throw new IllegalArgumentException("The view is not associated with SideslipEntryBehavior");
+            } else {
+                return (SideslipEntryBehavior)behavior;
+            }
+        }
+    }
 }
