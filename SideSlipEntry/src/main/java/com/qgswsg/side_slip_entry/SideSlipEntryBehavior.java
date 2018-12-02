@@ -1,4 +1,4 @@
-package com.qgswsg.sideslipentrybehaviorlib;
+package com.qgswsg.side_slip_entry;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -24,6 +24,7 @@ import java.lang.ref.WeakReference;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+
 /**
  * 侧滑进入 <br/>
  * 控件如果想实现从右侧滑入的效果，可以绑定此Behavior 并添加到CoordinatorLayout布局中，方可实现从右侧滑入的效果，并支持嵌套滑动。<br/>
@@ -37,7 +38,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
  *         app:fitToContents=&quot;false&quot;
  *         app:halfable=&quot;true&quot;
  *         app:hideable=&quot;true&quot;
- *         app:layout_behavior=&quot;com.qgswsg.sideslipentrybehaviorlib.SideSlipEntryBehavior&quot;
+ *         app:layout_behavior=&quot;com.qgswsg.side_slip_entry.SideSlipEntryBehavior&quot;
  *         app:smallTailMovedOut=&quot;true&quot;
  *         app:smallTailWidth=&quot;50dp&quot;
  *         app:smallTailWidthView=&quot;@id/smallTailView&quot;
@@ -223,13 +224,13 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
     public SideSlipEntryBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         //读取相关xml属性，并设置
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SideslipEntryBehavior);
-        setSmallTailViewId(a.getResourceId(R.styleable.SideslipEntryBehavior_smallTailWidthView, -1));
-        setSmallTailWidth(a.getDimensionPixelSize(R.styleable.SideslipEntryBehavior_smallTailWidth, -1));
-        setHideable(a.getBoolean(R.styleable.SideslipEntryBehavior_hideable, false));
-        setFitToContents(a.getBoolean(R.styleable.SideslipEntryBehavior_fitToContents, false));
-        setSmallTailMovedOut(a.getBoolean(R.styleable.SideslipEntryBehavior_smallTailMovedOut, true));
-        setHalfable(a.getBoolean(R.styleable.SideslipEntryBehavior_halfable, false));
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SideSlipEntryBehavior);
+        setSmallTailViewId(a.getResourceId(R.styleable.SideSlipEntryBehavior_smallTailWidthView, -1));
+        setSmallTailWidth(a.getDimensionPixelSize(R.styleable.SideSlipEntryBehavior_smallTailWidth, -1));
+        setHideable(a.getBoolean(R.styleable.SideSlipEntryBehavior_hideable, false));
+        setFitToContents(a.getBoolean(R.styleable.SideSlipEntryBehavior_fitToContents, false));
+        setSmallTailMovedOut(a.getBoolean(R.styleable.SideSlipEntryBehavior_smallTailMovedOut, true));
+        setHalfable(a.getBoolean(R.styleable.SideSlipEntryBehavior_halfable, false));
         a.recycle();
     }
 

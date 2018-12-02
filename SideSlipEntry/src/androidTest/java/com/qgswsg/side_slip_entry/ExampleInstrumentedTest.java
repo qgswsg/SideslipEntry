@@ -1,4 +1,4 @@
-package com.qgswsg.sideslipentrybehaviorlib;
+package com.qgswsg.side_slip_entry;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
