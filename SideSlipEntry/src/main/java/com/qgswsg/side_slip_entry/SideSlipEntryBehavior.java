@@ -390,16 +390,10 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
                         setStateInternal(STATE_DRAGGING);
                     }
                 } else if (dx < 0 && !target.canScrollHorizontally(-1)) {//向右滑
-                    int rightEdge = getRightEdge();
-                    if (newLeft > rightEdge) {//此处和向左滑动一样，只是判断的边界变为了右边界
-                        consumed[0] = currentLeft - rightEdge;
-                        ViewCompat.offsetLeftAndRight(child, -consumed[0]);
-                        setStateInternal(hideable ? STATE_HIDDEN : STATE_COLLAPSED);
-                    } else {
-                        consumed[0] = dx;
-                        ViewCompat.offsetLeftAndRight(child, -dx);
-                        setStateInternal(STATE_DRAGGING);
-                    }
+                    //向右滑动不检查边界，根据hideable字段判断最终状态，如果不可隐藏，将自动弹回STATE_COLLAPSED状态
+                    consumed[0] = dx;
+                    ViewCompat.offsetLeftAndRight(child, -dx);
+                    setStateInternal(STATE_DRAGGING);
                 }
 
                 dispatchOnSlide(child.getLeft());
@@ -436,7 +430,7 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
                 int halfXAndCollapsedXMin = Math.min(halfX, collapsedOffset);
                 int halfXAndCollapsedXMax = Math.max(halfX, collapsedOffset);
                 left = currentLeft < halfXAndCollapsedXMin ? halfXAndCollapsedXMin : currentLeft > halfXAndCollapsedXMax ? rightEdge : halfXAndCollapsedXMax;
-                targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED :left == collapsedOffset ? STATE_COLLAPSED : STATE_HIDDEN);
+                targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : left == collapsedOffset ? STATE_COLLAPSED : STATE_HIDDEN);
             }
             if (viewDragHelper.smoothSlideViewTo(child, left, child.getTop())) {
                 setStateInternal(STATE_SETTLING);
