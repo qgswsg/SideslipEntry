@@ -1,1 +1,1 @@
-include ':app', ':sideslipentrybehaviorlib'
+include ':app', ':SideSlipEntry'
