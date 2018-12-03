@@ -41,7 +41,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
  *         app:layout_behavior=&quot;com.qgswsg.side_slip_entry.SideSlipEntryBehavior&quot;
  *         app:smallTailMovedOut=&quot;true&quot;
  *         app:smallTailWidth=&quot;50dp&quot;
- *         app:smallTailWidthView=&quot;@id/smallTailView&quot;
+ *         app:smallTailView=&quot;@id/smallTailView&quot;
  *         tools:ignore=&quot;MissingPrefix&quot;&gt;
  *                  ...
  *         &lt;/ViewGroup&gt;
@@ -177,13 +177,33 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
                 int halfX = halfable ? halfExpandedOffset : leftEdge;//判断是否可以在一半的时候停住
                 left = currentLeft > halfX ? halfX : leftEdge;//根据当前位置确定最终的目标位置
                 targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : STATE_EXPANDED); //确定目标状态
-            } else {//向右滑动
+            } else if (xvel > 0.0f) {//向右滑动
                 int rightEdge = getRightEdge(); //向右滑动的最右边
                 int halfX = halfable ? halfExpandedOffset : rightEdge;//判断可否在一半的时候停住
                 int halfXAndCollapsedXMin = Math.min(halfX, collapsedOffset);//先到比较靠左的位置
                 int halfXAndCollapsedXMax = Math.max(halfX, collapsedOffset);//用来判断是不是已经过了比较靠右的位置
                 left = currentLeft < halfXAndCollapsedXMin ? halfXAndCollapsedXMin : currentLeft > halfXAndCollapsedXMax ? rightEdge : halfXAndCollapsedXMax;//根据当前位置确定最终的目标位置
-                targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : STATE_HIDDEN);//确定目标状态
+                targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : left == collapsedOffset ? STATE_COLLAPSED : STATE_HIDDEN);//确定目标状态
+            } else {
+                //离谁近就到谁那里去
+                int leftEdge = getLeftEdge();
+                int minDistance = Math.abs(currentLeft - leftEdge);
+                left = leftEdge;
+                targetState = STATE_EXPANDED;
+                if (halfable && Math.abs(currentLeft - halfExpandedOffset) < minDistance) {
+                    minDistance = Math.abs(currentLeft - halfExpandedOffset);
+                    left = halfExpandedOffset;
+                    targetState = STATE_HALF_EXPANDED;
+                }
+                if (Math.abs(currentLeft - collapsedOffset) < minDistance) {
+                    minDistance = Math.abs(currentLeft - collapsedOffset);
+                    left = collapsedOffset;
+                    targetState = STATE_COLLAPSED;
+                }
+                if (hideable && Math.abs(currentLeft) < minDistance) {
+                    left = parentWidth;
+                    targetState = STATE_HIDDEN;
+                }
             }
             //自动补偿移动到刚才确定目标位置，并设置好目标状态
             if (viewDragHelper.settleCapturedViewAt(left, releasedChild.getTop())) {
@@ -225,7 +245,7 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
         super(context, attrs);
         //读取相关xml属性，并设置
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SideSlipEntryBehavior);
-        setSmallTailViewId(a.getResourceId(R.styleable.SideSlipEntryBehavior_smallTailWidthView, -1));
+        setSmallTailViewId(a.getResourceId(R.styleable.SideSlipEntryBehavior_smallTailView, -1));
         setSmallTailWidth(a.getDimensionPixelSize(R.styleable.SideSlipEntryBehavior_smallTailWidth, -1));
         setHideable(a.getBoolean(R.styleable.SideSlipEntryBehavior_hideable, false));
         setFitToContents(a.getBoolean(R.styleable.SideSlipEntryBehavior_fitToContents, false));
@@ -417,13 +437,25 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
                 left = currentLeft > halfX ? halfX : leftEdge;
                 targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : STATE_EXPANDED);
             } else if (lastNestedScrollDx == 0) {//如果方向无法确定，向左边最近的状态吸附
+                //离谁近就到谁那里去
                 int leftEdge = getLeftEdge();
-                int halfX = halfable ? halfExpandedOffset : leftEdge;
-                int rightEdge = getRightEdge();
-                int halfXAndCollapsedXMin = Math.min(halfX, collapsedOffset);
-                int halfXAndCollapsedXMax = Math.max(halfX, collapsedOffset);
-                left = currentLeft < halfXAndCollapsedXMin ? leftEdge : currentLeft > halfXAndCollapsedXMax ? rightEdge : halfXAndCollapsedXMax;
-                targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : left == collapsedOffset ? STATE_COLLAPSED : STATE_HIDDEN);
+                int minDistance = Math.abs(currentLeft - leftEdge);
+                left = leftEdge;
+                targetState = STATE_EXPANDED;
+                if (halfable && Math.abs(currentLeft - halfExpandedOffset) < minDistance) {
+                    minDistance = Math.abs(currentLeft - halfExpandedOffset);
+                    left = halfExpandedOffset;
+                    targetState = STATE_HALF_EXPANDED;
+                }
+                if (Math.abs(currentLeft - collapsedOffset) < minDistance) {
+                    minDistance = Math.abs(currentLeft - collapsedOffset);
+                    left = collapsedOffset;
+                    targetState = STATE_COLLAPSED;
+                }
+                if (hideable && Math.abs(currentLeft) < minDistance) {
+                    left = parentWidth;
+                    targetState = STATE_HIDDEN;
+                }
             } else {//向右
                 int rightEdge = getRightEdge();
                 int halfX = halfable ? halfExpandedOffset : rightEdge;
