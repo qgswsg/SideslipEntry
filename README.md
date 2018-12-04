@@ -1,7 +1,9 @@
 # SideSlipEntry
 
 侧滑进入 
-![效果图]()
+
+![效果图](https://github.com/qgswsg/SideslipEntry/blob/master/%E7%A4%BA%E4%BE%8B.gif)
+
 控件如果想实现从右侧滑入的效果，可以绑定此Behavior 并添加到CoordinatorLayout布局中，方可实现从右侧滑入的效果，并支持嵌套滑动。 
 
 示例：
