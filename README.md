@@ -1,6 +1,8 @@
 # SideSlipEntry
 
-侧滑进入 控件如果想实现从右侧滑入的效果，可以绑定此Behavior 并添加到CoordinatorLayout布局中，方可实现从右侧滑入的效果，并支持嵌套滑动。 
+侧滑进入 
+
+控件如果想实现从右侧滑入的效果，可以绑定此Behavior 并添加到CoordinatorLayout布局中，方可实现从右侧滑入的效果，并支持嵌套滑动。 
 
 示例：
 <pre>
