@@ -6,6 +6,6 @@
         <attr name="fitToContents" format="boolean" />
         <attr name="smallTailMovedOut" format="boolean" />
         <attr name="halfable" format="boolean"/>
-        <attr name="smallTailWidthView" format="reference" />
+        <attr name="smallTailView" format="reference" />
     </declare-styleable>
 </resources>

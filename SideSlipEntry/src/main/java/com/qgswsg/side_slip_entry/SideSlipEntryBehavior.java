@@ -257,7 +257,7 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
     @Override
     public boolean onLayoutChild(@NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
         if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
-            ViewCompat.setFitsSystemWindows(child, true);
+            child.setFitsSystemWindows(true);
         }
         int savedLeft = child.getTop();
         parent.onLayoutChild(child, layoutDirection);
@@ -266,6 +266,15 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
         if (smallTailViewId != -1) {//如果用户指定了“小尾巴”控件，就找到这个控件并获取他的宽度
             View smallTailView = findSmallTailViewById(parent, smallTailViewId);
             if (smallTailView != null) smallTailWidth = smallTailView.getWidth();
+        }
+        if (smallTailMovedOut) {
+            //如果在允许“小尾巴”可滑出屏幕时，判断一下绑定此Behavior的控件是不是设置的MATCH_PARENT
+            //如果是，就将此控件的宽度设置成CoordinatorLayout的宽度加上“小尾巴”的宽度
+            ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
+            if (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) {
+                layoutParams.width = parentWidth + smallTailWidth;
+                child.setLayoutParams(layoutParams);
+            }
         }
         //确定控件完全滑出时，相对于可滑动区域的左边界的偏移量
         fitToContentsOffset = Math.max(smallTailMovedOut ? -smallTailWidth : 0, parentWidth - child.getWidth());
@@ -436,7 +445,7 @@ public class SideSlipEntryBehavior<V extends View> extends CoordinatorLayout.Beh
                 int halfX = halfable ? halfExpandedOffset : leftEdge;
                 left = currentLeft > halfX ? halfX : leftEdge;
                 targetState = (byte) (left == halfExpandedOffset ? STATE_HALF_EXPANDED : STATE_EXPANDED);
-            } else if (lastNestedScrollDx == 0) {//如果方向无法确定，向左边最近的状态吸附
+            } else if (lastNestedScrollDx == 0) {
                 //离谁近就到谁那里去
                 int leftEdge = getLeftEdge();
                 int minDistance = Math.abs(currentLeft - leftEdge);
