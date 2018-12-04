@@ -18,7 +18,7 @@
       app:smallTailView=&quot;@id/smallTailView&quot;
       tools:ignore=&quot;MissingPrefix&quot;&gt;
             ...
-      &lt;/ViewGroup&gt;
+&lt;/ViewGroup&gt;
 </pre>
 最后记得在根标签中添加 xmlns:app="http://schemas.android.com/apk/res-auto"
 
