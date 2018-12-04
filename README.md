@@ -4,21 +4,21 @@
 
 示例：
 <pre>
-      &lt;ViewGroup
-          android:layout_width=&quot;match_parent&quot;
-          android:layout_height=&quot;wrap_content&quot;
-          android:layout_gravity=&quot;bottom&quot;
-          android:layout_marginBottom=&quot;16dp&quot;
-          app:fitToContents=&quot;false&quot;
-          app:halfable=&quot;true&quot;
-          app:hideable=&quot;true&quot;
-          app:layout_behavior=&quot;com.qgswsg.side_slip_entry.SideSlipEntryBehavior&quot;
-          app:smallTailMovedOut=&quot;true&quot;
-          app:smallTailWidth=&quot;50dp&quot;
-          app:smallTailView=&quot;@id/smallTailView&quot;
-          tools:ignore=&quot;MissingPrefix&quot;&gt;
-                   ...
-          &lt;/ViewGroup&gt;
+&lt;ViewGroup
+      android:layout_width=&quot;match_parent&quot;
+      android:layout_height=&quot;wrap_content&quot;
+      android:layout_gravity=&quot;bottom&quot;
+      android:layout_marginBottom=&quot;16dp&quot;
+      app:fitToContents=&quot;false&quot;
+      app:halfable=&quot;true&quot;
+      app:hideable=&quot;true&quot;
+      app:layout_behavior=&quot;com.qgswsg.side_slip_entry.SideSlipEntryBehavior&quot;
+      app:smallTailMovedOut=&quot;true&quot;
+      app:smallTailWidth=&quot;50dp&quot;
+      app:smallTailView=&quot;@id/smallTailView&quot;
+      tools:ignore=&quot;MissingPrefix&quot;&gt;
+            ...
+      &lt;/ViewGroup&gt;
 </pre>
 最后记得在根标签中添加 xmlns:app="http://schemas.android.com/apk/res-auto"
 
