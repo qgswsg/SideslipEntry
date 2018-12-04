@@ -26,3 +26,6 @@
 
 另外：
 ViewPager和HorizontalScrollView也算是可以水平滑动的控件，但它们并没有实现NestedScrollingChild相关接口。 因此本Behavior是不支持与ViewPager和HorizontalScrollView嵌套滑动的，如果想实现它们的嵌套滑动， 可继承ViewPager或HorizontalScrollView实现NestedScrollingChild相关接口，并重写它们的onTouchEvent和onInterceptTouchEvent相关方法， 使之将滑动事件分享出来。
+
+依赖
+<pre>implementation 'com.qgswsg.side_slip_entry:SideSlipEntry:1.4'</pre>
