@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SmallTailMovedOutActivity">
+
+    <LinearLayout
+        android:id="@+id/bindSideSlipEntryBehaviorView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        app:layout_behavior="@string/side_slip_entry_behavior"
+        app:smallTailMovedOut="true"
+        app:smallTailView="@id/smallTailView"
+        tools:ignore="MissingPrefix">
+
+        <ImageView
+            android:id="@+id/smallTailView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_drag" />
+
+        <android.support.v7.widget.CardView
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            app:contentPadding="10dp">
+
+            <WebView
+                android:id="@+id/myWebView"
+                android:layout_width="match_parent"
+                android:layout_height="380dp" />
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

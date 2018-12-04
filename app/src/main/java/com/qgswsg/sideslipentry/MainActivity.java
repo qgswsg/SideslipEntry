@@ -1,22 +1,15 @@
 package com.qgswsg.sideslipentry;
 
-import android.graphics.Color;
-import android.graphics.Point;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.qgswsg.sideslipentrybehaviorlib.SideslipEntryBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,97 +17,48 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private MyViewPager viewPager;
-    private LinearLayout myLl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final List<View> viewList = new ArrayList<>();
-        View inflate = View.inflate(this, R.layout.viewpager_item, null);
-        CardView icv = inflate.findViewById(R.id.icv);
-        icv.setBackgroundColor(Color.BLUE);
-        viewList.add(inflate);
-        View inflate1 = View.inflate(this, R.layout.viewpager_item, null);
-        CardView icv1 = inflate1.findViewById(R.id.icv);
-        icv1.setBackgroundColor(Color.YELLOW);
-        viewList.add(inflate1);
-        viewPager = findViewById(R.id.myVp);
-        myLl = findViewById(R.id.myLl);
-        myLl.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = findViewById(R.id.myCv).getWidth();
-                Display display = getWindowManager().getDefaultDisplay();
-                Point point = new Point();
-                display.getSize(point);
-                ViewGroup.LayoutParams lp1 = myLl.getLayoutParams();
-                lp1.width = point.x + width;
-                myLl.setLayoutParams(lp1);
-                ViewGroup.LayoutParams lp2 = viewPager.getLayoutParams();
-                lp2.width = point.x;
-                viewPager.setLayoutParams(lp2);
-                SideslipEntryBehavior<LinearLayout> from = SideslipEntryBehavior.from(myLl);
-                from.setSmallTailWidth(width);
-            }
-        });
-
-//        RecyclerView recyclerView = findViewById(R.id.myRv);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        List<String> items = new ArrayList<>();
-//        StringBuilder builder = new StringBuilder();
-//        for (int i = 0; i < 100; i++) {
-//            builder.delete(0, builder.length());
-//            builder.append("这是第").append(i).append("项");
-//            items.add(builder.toString());
-//        }
-//        recyclerView.setAdapter(new Adapter(items));
-
-        viewPager.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return viewList.size();
-            }
-
-            @Override
-            public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
-                return view == o;
-            }
-
-            @NonNull
-            @Override
-            public Object instantiateItem(@NonNull ViewGroup container, int position) {
-                container.addView(viewList.get(position));
-                return viewList.get(position);
-            }
-
-            @Override
-            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-                container.removeView(viewList.get(position));
-            }
-        });
+        RecyclerView activityListRv = findViewById(R.id.activityListRv);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        activityListRv.setLayoutManager(layoutManager);
+        List<ActivityItem> activityItems = new ArrayList<>();
+        activityItems.add(new ActivityItem("普通控件,无嵌套滑动", SlidingIsViewActivity.class));
+        activityItems.add(new ActivityItem("单独一个RecyclerView", SlidingIsRecyclerViewActivity.class));
+        activityItems.add(new ActivityItem("“小尾巴”会移出屏幕", SmallTailMovedOutActivity.class));
+        activityListRv.setAdapter(new ActivityListAdapter(activityItems));
     }
 
-    class Adapter extends RecyclerView.Adapter<MyViewHolder> {
+    class ActivityListAdapter extends RecyclerView.Adapter<ActivityViewHolder> {
 
-        private List<String> items;
+        private List<ActivityItem> items;
 
-        public Adapter(List<String> items) {
+        ActivityListAdapter(List<ActivityItem> items) {
             this.items = items;
         }
 
         @NonNull
         @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            return new MyViewHolder(View.inflate(MainActivity.this, android.R.layout.simple_list_item_1, null));
+        public ActivityViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            return new ActivityViewHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.item_layout,viewGroup,false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-            myViewHolder.textView.setText(items.get(i));
+        public void onBindViewHolder(@NonNull ActivityViewHolder activityViewHolder, int i) {
+            final ActivityItem activityItem = items.get(i);
+            activityViewHolder.name.setText(activityItem.getName());
+            activityViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, activityItem.getClazz());
+                    intent.putExtra("NAME", activityItem.getName());
+                    startActivity(intent);
+                }
+            });
         }
 
         @Override
@@ -123,12 +67,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+    class ActivityViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
 
-        public MyViewHolder(@NonNull View itemView) {
+        ActivityViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(android.R.id.text1);
+            name = itemView.findViewById(R.id.itemContent);
+        }
+    }
+
+    class ActivityItem {
+        private String name;
+        private Class<?> clazz;
+
+        public ActivityItem(String name, Class clazz) {
+            this.name = name;
+            this.clazz = clazz;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Class<?> getClazz() {
+            return clazz;
+        }
+
+        public void setClazz(Class<?> clazz) {
+            this.clazz = clazz;
         }
     }
 }

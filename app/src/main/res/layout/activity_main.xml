@@ -1,34 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activityListRv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <LinearLayout
-        android:id="@+id/myLl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        app:layout_behavior="com.qgswsg.sideslipentrybehaviorlib.SideslipEntryBehavior">
-
-        <android.support.v7.widget.CardView
-            app:cardBackgroundColor="#000"
-            android:id="@+id/myCv"
-            android:layout_width="70dp"
-            android:layout_height="70dp" />
-
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/myRv"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
-        <com.qgswsg.sideslipentry.MyViewPager
-            android:id="@+id/myVp"
-            android:layout_width="match_parent"
-            android:layout_height="70dp" />
-
-    </LinearLayout>
-
-</android.support.design.widget.CoordinatorLayout>
+    tools:context=".MainActivity" />
