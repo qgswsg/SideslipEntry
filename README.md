@@ -34,9 +34,9 @@ ViewPager和HorizontalScrollView也算是可以水平滑动的控件，但它们
 | 属性（attr） | 格式（format） | 说明（Description） |
 | ------ | ------ | ------ |
 | smallTailWidth | dimension | “小尾巴”的宽度，就是停靠在最右边时，露出来部分的宽度 |
-| hideable | boolean | 是否可以被完全移出屏幕隐藏起来 |
-| fitToContents | boolean | 为true时，控件所有内容都被显示了就不能再往左拖动了；否则将允许拖动到屏幕最左边 |
-| smallTailMovedOut | boolean | 为true时，“小尾巴”部分将允许拖动到最左边的屏幕外；否则只能拖动到屏幕最左边 |
+| hideable | boolean | 是否可以被完全滑出右边界隐藏起来；此属性只针对滑动，如果代码中直接设置隐藏，将忽略此属性 |
+| fitToContents | boolean | 为true时，控件所有内容都被显示了就不能再往左滑动了；否则一直能滑动到左边界；如果设置了smallTailMovedOut=true 此属性将失效 |
+| smallTailMovedOut | boolean | 为true时，“小尾巴”部分将允许完全滑动到左边界之外；否则滑动到左边界就会停 |
 | halfable | boolean | 为true时，允许在屏幕水平方向中间停靠 |
 | smallTailView | reference | 指定“小尾巴”控件的id，此控件只能是绑定此behavior控件的直接子控件；指定此属性后，smallTailWidth属性将无效，“小尾巴”的宽度会自动计算 |
 
