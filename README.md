@@ -38,7 +38,7 @@ ViewPager和HorizontalScrollView也算是可以水平滑动的控件，但它们
 | fitToContents | boolean | 为true时，控件所有内容都被显示了就不能再往左滑动了；否则一直能滑动到左边界；如果设置了smallTailMovedOut=true 此属性将失效 |
 | smallTailMovedOut | boolean | 为true时，“小尾巴”部分将允许完全滑动到左边界之外；否则滑动到左边界就会停 |
 | halfable | boolean | 为true时，允许在屏幕水平方向中间停靠 |
-| smallTailView | reference | 指定“小尾巴”控件的id，此控件只能是绑定此behavior控件的直接子控件；指定此属性后，smallTailWidth属性将无效，“小尾巴”的宽度会自动计算 |
+| smallTailView | reference | 指定“小尾巴”控件的id，指定控件id后，只会获取被指定控件的宽度；指定此属性后，smallTailWidth属性将无效，“小尾巴”的宽度会自动计算 |
 
 依赖
 <pre>implementation 'com.qgswsg.side_slip_entry:SideSlipEntry:1.5'</pre>
