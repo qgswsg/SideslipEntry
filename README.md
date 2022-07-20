@@ -1,7 +1,5 @@
 # SideSlipEntry
 
-[![](https://www.jitpack.io/v/qgswsg/SideslipEntry.svg)](https://www.jitpack.io/#qgswsg/SideslipEntry)
-
 侧滑进入 
 
 ![效果图](https://github.com/qgswsg/SideslipEntry/blob/master/%E7%A4%BA%E4%BE%8B.gif)
@@ -44,5 +42,3 @@ ViewPager和HorizontalScrollView也算是可以水平滑动的控件，但它们
 
 依赖
 <pre>implementation 'com.qgswsg.side_slip_entry:SideSlipEntry:1.5'</pre>
-或者
-<pre>implementation 'com.github.qgswsg:SideslipEntry:Tag'</pre>
